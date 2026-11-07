@@ -47,16 +47,19 @@ val fgLight = 0xFF1C1B19
 
 val bgDark = 0xFF161513
 val fgDark = 0xFFEDEAE3
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         setContent {
             UnitConverterTheme {
+                val isDark = isSystemInDarkTheme()
+                val fgAccent = if (isDark) Color(fgDark) else Color(fgLight)
+                val bgAccent = if (isDark) Color(bgDark) else Color(bgLight)
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight),
-                    contentColor = if (isSystemInDarkTheme()) Color(fgDark) else Color(fgLight)
+                    color = bgAccent,
+                    contentColor = fgAccent
                 ) {
                     UnitConverter()
                 }
@@ -77,6 +80,10 @@ fun UnitConverter() {
 
     var inputExpanded by remember { mutableStateOf(false) }
     var outputExpanded by remember { mutableStateOf(false) }
+
+    val isDark = isSystemInDarkTheme()
+    val fgAccent = if (isDark) Color(fgDark) else Color(fgLight)
+    val bgAccent = if (isDark) Color(bgDark) else Color(bgLight)
 
     fun converter() {
 
@@ -115,7 +122,7 @@ fun UnitConverter() {
             text = "Unit Converter",
             style = MaterialTheme.typography.headlineLarge,
             fontWeight = FontWeight(850),
-            color = if (isSystemInDarkTheme()) Color(fgDark) else Color(fgLight)
+            color = fgAccent
         )
         Spacer(modifier = Modifier.height(16.dp))
         OutlinedTextField(
@@ -127,13 +134,13 @@ fun UnitConverter() {
                 .width(300.dp)
                 .heightIn(max = 150.dp),
             colors = OutlinedTextFieldDefaults.colors(
-                focusedContainerColor = if (isSystemInDarkTheme()) Color(fgDark) else Color(fgLight),
-                unfocusedContainerColor = if (isSystemInDarkTheme()) Color(fgDark) else Color(fgLight),
-                focusedTextColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight),
-                unfocusedTextColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight),
-                focusedBorderColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight),
-                unfocusedBorderColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight),
-                cursorColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight),
+                focusedContainerColor = fgAccent,
+                unfocusedContainerColor = fgAccent,
+                focusedTextColor = bgAccent,
+                unfocusedTextColor = bgAccent,
+                focusedBorderColor = bgAccent,
+                unfocusedBorderColor = bgAccent,
+                cursorColor = bgAccent,
                 focusedPlaceholderColor = Color.Gray,
                 unfocusedPlaceholderColor = Color.Gray
             )
@@ -146,8 +153,8 @@ fun UnitConverter() {
                     modifier = Modifier.width(140.dp),
                     onClick = {inputExpanded = true},
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isSystemInDarkTheme()) Color(fgDark) else Color(fgLight),
-                        contentColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)
+                        containerColor = fgAccent,
+                        contentColor = bgAccent
                     )
                 ){
                     Text(inputSelection)
@@ -159,38 +166,38 @@ fun UnitConverter() {
                 DropdownMenu(
                     expanded = inputExpanded,
                     onDismissRequest = {inputExpanded = false},
-                    containerColor = if (isSystemInDarkTheme()) Color(fgDark) else Color(fgLight)
+                    containerColor = fgAccent
                 ) {
                     DropdownMenuItem(text = { Text("Meter") },  onClick = {
                         inputSelection = "Meter"
                         inputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Centimeter") }, onClick = {
                         inputSelection = "Centimeter"
                         inputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Inch") }, onClick = {
                         inputSelection = "Inch"
                         inputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Kilometer") }, onClick = {
                         inputSelection = "Kilometer"
                         inputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Millimeter") }, onClick = {
                         inputSelection = "Millimeter"
                         inputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Foot") }, onClick = {
                         inputSelection = "Foot"
                         inputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                 }
             }
 
@@ -199,8 +206,8 @@ fun UnitConverter() {
                     modifier = Modifier.width(140.dp),
                     onClick = {outputExpanded = true},
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = if (isSystemInDarkTheme()) Color(fgDark) else Color(fgLight),
-                        contentColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)
+                        containerColor = fgAccent,
+                        contentColor = bgAccent
                     )
                 ){
                     Text(outputSelection)
@@ -212,38 +219,38 @@ fun UnitConverter() {
                 DropdownMenu(
                     expanded = outputExpanded,
                     onDismissRequest = {outputExpanded = false},
-                    containerColor = if (isSystemInDarkTheme()) Color(fgDark) else Color(fgLight)
+                    containerColor = fgAccent
                 ) {
                     DropdownMenuItem(text = { Text("Meter") },  onClick = {
                         outputSelection = "Meter"
                         outputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Centimeter") }, onClick = {
                         outputSelection = "Centimeter"
                         outputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Inch") }, onClick = {
                         outputSelection = "Inch"
                         outputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Kilometer") }, onClick = {
                         outputSelection = "Kilometer"
                         outputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Millimeter") }, onClick = {
                         outputSelection = "Millimeter"
                         outputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                     DropdownMenuItem(text = { Text("Foot") }, onClick = {
                         outputSelection = "Foot"
                         outputExpanded = false
                         converter()
-                    }, colors = MenuDefaults.itemColors(textColor = if (isSystemInDarkTheme()) Color(bgDark) else Color(bgLight)))
+                    }, colors = MenuDefaults.itemColors(textColor = bgAccent))
                 }
             }
         }
@@ -260,7 +267,7 @@ fun UnitConverter() {
 
 fun formatOutput(value: Double): String {
     if (abs(value) >= 1_000_000 || (value != 0.0 && abs(value) < 0.0001)) {
-        return "%.4e".format(value)
+        return "%.5e".format(value)
     }
-    return "%.2f".format(value)
+    return "%.5f".format(value)
 }
